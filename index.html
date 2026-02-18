@@ -3,47 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Google OS Hybrid Concept</title>
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<title>Google OS x macOS Concept</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 <style>
 :root {
-  --bg-desktop: linear-gradient(135deg, #e8f0fe 0%, #8ab4f8 100%);
-  --bg-window: #ffffff;
-  --bg-header: #f1f3f4;
-  --border-window: #e8eaed;
-  --text-main: #3c4043;
+  --bg-desktop: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop');
+  --bg-window: rgba(255, 255, 255, 0.95);
+  --bg-header: #e8eaed;
+  --text-main: #202124;
   --text-muted: #5f6368;
-  --bg-taskbar: rgba(255, 255, 255, 0.9);
-  --bg-launcher: rgba(255, 255, 255, 0.85);
-  --hover-bg: #e8eaed;
-  --icon-hover: rgba(66, 133, 244, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.4);
 }
 
 [data-theme="dark"] {
-  --bg-desktop: linear-gradient(135deg, #202124 0%, #3c4043 100%);
-  --bg-window: #202124;
+  --bg-desktop: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop');
+  --bg-window: rgba(32, 33, 36, 0.95);
   --bg-header: #303134;
-  --border-window: #5f6368;
   --text-main: #e8eaed;
   --text-muted: #9aa0a6;
-  --bg-taskbar: rgba(32, 33, 36, 0.9);
-  --bg-launcher: rgba(32, 33, 36, 0.85);
-  --hover-bg: #3c4043;
-  --icon-hover: rgba(255, 255, 255, 0.1);
+  --glass-bg: rgba(32, 33, 36, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.1);
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: 'Roboto', sans-serif;
-  background: var(--bg-desktop);
+  font-family: '-apple-system', 'Roboto', sans-serif;
+  background-image: var(--bg-desktop);
+  background-size: cover;
+  background-position: center;
   height: 100vh;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: background 0.3s;
   color: var(--text-main);
+  transition: background 0.3s;
+}
+
+#topbar {
+  height: 28px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid var(--glass-border);
+  z-index: 9999;
+}
+
+.topbar-section {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.topbar-item {
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.1s;
+}
+
+.topbar-item:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="dark"] .topbar-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.topbar-bold {
+  font-weight: 700;
 }
 
 #desktop {
@@ -54,44 +90,54 @@ body {
 .window {
   position: absolute;
   background: var(--bg-window);
-  border: 1px solid var(--border-window);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.3);
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  border: 1px solid var(--glass-border);
 }
 
 .window-header {
-  background: var(--bg-header);
-  height: 40px;
+  background: transparent;
+  height: 38px;
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  border-bottom: 1px solid var(--border-window);
+  padding: 0 12px;
   cursor: grab;
+  border-bottom: 1px solid var(--glass-border);
 }
 
 .window-header:active {
   cursor: grabbing;
 }
 
-.window-title {
-  flex-grow: 1;
-  font-size: 14px;
-  font-weight: 500;
-  pointer-events: none;
+.mac-controls {
+  display: flex;
+  gap: 8px;
+  width: 60px;
 }
 
-.window-controls span {
-  margin-left: 12px;
-  font-size: 18px;
-  color: var(--text-muted);
+.mac-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
   cursor: pointer;
 }
 
-.window-controls span:hover {
-  color: var(--text-main);
+.dot-close { background: #FF5F56; }
+.dot-min { background: #FFBD2E; }
+.dot-max { background: #27C93F; }
+
+.window-title {
+  flex-grow: 1;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 500;
+  pointer-events: none;
+  margin-right: 60px; 
 }
 
 .window-content {
@@ -107,10 +153,11 @@ body {
 }
 
 .google-logo {
-  font-size: 48px;
+  font-size: 56px;
   font-weight: 500;
   letter-spacing: -2px;
   margin-bottom: 24px;
+  font-family: 'Roboto', sans-serif;
 }
 
 .g-blue { color: #4285F4; }
@@ -119,14 +166,15 @@ body {
 .g-green { color: #34A853; }
 
 .search-bar {
-  width: 80%;
+  width: 70%;
   height: 44px;
   border-radius: 22px;
-  border: 1px solid var(--border-window);
+  border: 1px solid var(--glass-border);
   display: flex;
   align-items: center;
   padding: 0 16px;
-  box-shadow: 0 1px 6px rgba(0,0,0,0.1);
+  background: var(--bg-window);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
 .search-bar input {
@@ -139,42 +187,11 @@ body {
   font-size: 16px;
 }
 
-.files-content {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-  padding: 24px;
-  align-items: start;
-  justify-content: start;
-  align-content: start;
-  width: 100%;
-}
-
-.file-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  padding: 12px;
-  border-radius: 8px;
-  transition: background 0.2s;
-}
-
-.file-item:hover {
-  background: var(--hover-bg);
-}
-
-.file-item span:last-child {
-  font-size: 13px;
-  color: var(--text-main);
-}
-
 .terminal-content {
-  background: #1e1e1e;
+  background: rgba(30, 30, 30, 0.95);
   color: #00ff00;
   font-family: monospace;
-  padding: 10px;
+  padding: 12px;
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
@@ -183,8 +200,6 @@ body {
 .settings-content {
   padding: 24px;
   flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
 }
 
 .switch {
@@ -229,179 +244,96 @@ input:checked + .slider:before {
   transform: translateX(20px);
 }
 
-#taskbar {
-  height: 56px;
-  background: var(--bg-taskbar);
-  backdrop-filter: blur(10px);
+#dock-container {
+  position: absolute;
+  bottom: 12px;
+  width: 100%;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 16px;
-  box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
-  position: relative;
+  justify-content: center;
   z-index: 1000;
 }
 
-.taskbar-left, .taskbar-right {
+.dock {
   display: flex;
-  align-items: center;
-  gap: 12px;
-  color: var(--text-main);
-  width: 150px;
-}
-
-.taskbar-right {
-  justify-content: flex-end;
-}
-
-.taskbar-center {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-}
-
-.app-icon {
-  width: 44px;
-  height: 44px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.app-icon:hover {
-  background: var(--icon-hover);
-}
-
-.start-menu {
-  position: absolute;
-  bottom: 64px;
-  left: 50%;
-  transform: translateX(-50%) translateY(20px);
-  width: 420px;
-  background: var(--bg-launcher);
+  align-items: flex-end;
+  gap: 6px;
+  background: var(--glass-bg);
   backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 24px;
+  padding: 8px 12px;
+  height: 64px;
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.dock-icon {
+  width: 52px;
+  height: 52px;
   border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.2);
-  padding: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  transition: opacity 0.2s, transform 0.2s;
-  opacity: 0;
-  pointer-events: none;
-  z-index: 999;
-}
-
-.start-menu.active {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-  pointer-events: all;
-}
-
-.launcher-search {
-  background: var(--bg-window);
-  border: 1px solid var(--border-window);
-  border-radius: 20px;
+  background: #ffffff;
   display: flex;
   align-items: center;
-  padding: 8px 16px;
-}
-
-.launcher-search input {
-  border: none;
-  background: transparent;
-  color: var(--text-main);
-  outline: none;
-  margin-left: 8px;
-  width: 100%;
-  font-size: 14px;
-}
-
-.launcher-apps {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 16px;
-}
-
-.launcher-app-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  justify-content: center;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 8px;
-  transition: background 0.2s;
+  transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+  transform-origin: bottom;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
 }
 
-.launcher-app-item:hover {
-  background: var(--hover-bg);
+.dock-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-.launcher-app-item img {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background: #fff;
-  padding: 4px;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+.dock-icon:hover {
+  transform: scale(1.6) translateY(-4px);
+  margin: 0 14px;
+  z-index: 10;
 }
 
-.launcher-app-item span {
-  font-size: 12px;
-  color: var(--text-main);
-  font-weight: 500;
+.dock-icon:has(+ .dock-icon:hover),
+.dock-icon:hover + .dock-icon {
+  transform: scale(1.25) translateY(-2px);
+  margin: 0 8px;
 }
 </style>
 </head>
 <body>
 
+<div id="topbar">
+  <div class="topbar-section">
+    <svg viewBox="0 0 24 24" width="16" height="16" class="topbar-item" onclick="toggleWindow('settingsWindow')">
+      <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+      <path fill="currentColor" d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+    </svg>
+    <span class="topbar-item topbar-bold">Google OS</span>
+    <span class="topbar-item">File</span>
+    <span class="topbar-item">Edit</span>
+    <span class="topbar-item">View</span>
+    <span class="topbar-item">Window</span>
+    <span class="topbar-item">Help</span>
+  </div>
+  <div class="topbar-section">
+    <span class="topbar-item" onclick="window.open('https://github.com/morbitzlovescheerios/windowstesty', '_blank')">Source: morbitzlovescheerios/windowstesty</span>
+    <span class="material-icons topbar-item" style="font-size: 16px;">signal_wifi_4_bar</span>
+    <span class="material-icons topbar-item" style="font-size: 16px;">battery_full</span>
+    <span class="topbar-item" id="clock"></span>
+  </div>
+</div>
+
 <div id="desktop">
   
-  <div class="start-menu" id="startMenu">
-    <div class="launcher-search">
-      <span class="material-icons" style="color: var(--text-muted)">search</span>
-      <input type="text" id="launcherInput" placeholder="Search apps, settings, web...">
-    </div>
-    <div class="launcher-apps">
-       <div class="launcher-app-item" onclick="window.open('https://youtube.com', '_blank')">
-         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=youtube.com" alt="YouTube">
-         <span>YouTube</span>
-       </div>
-       <div class="launcher-app-item" onclick="window.open('https://mail.google.com', '_blank')">
-         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=mail.google.com" alt="Gmail">
-         <span>Gmail</span>
-       </div>
-       <div class="launcher-app-item" onclick="window.open('https://drive.google.com', '_blank')">
-         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=drive.google.com" alt="Drive">
-         <span>Drive</span>
-       </div>
-       <div class="launcher-app-item" onclick="window.open('https://docs.google.com', '_blank')">
-         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=docs.google.com" alt="Docs">
-         <span>Docs</span>
-       </div>
-       <div class="launcher-app-item" onclick="window.open('https://maps.google.com', '_blank')">
-        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=maps.google.com" alt="Maps">
-        <span>Maps</span>
-      </div>
-      <div class="launcher-app-item" onclick="window.open('https://play.google.com', '_blank')">
-        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=play.google.com" alt="Play">
-        <span>Play</span>
-      </div>
-    </div>
-  </div>
-
-  <div class="window" id="browserWindow" style="display:none; width: 700px; height: 450px; top: 10%; left: 10%;">
+  <div class="window" id="browserWindow" style="display:none; width: 750px; height: 480px; top: 12%; left: 15%;">
     <div class="window-header" id="browserWindowheader">
-      <div class="window-title">Browser</div>
-      <div class="window-controls">
-        <span class="material-icons" onclick="document.getElementById('browserWindow').style.display='none'">close</span>
+      <div class="mac-controls">
+        <div class="mac-dot dot-close" onclick="document.getElementById('browserWindow').style.display='none'"></div>
+        <div class="mac-dot dot-min"></div>
+        <div class="mac-dot dot-max"></div>
       </div>
+      <div class="window-title">Browser</div>
     </div>
     <div class="window-content browser-content">
       <div class="google-logo">
@@ -414,51 +346,38 @@ input:checked + .slider:before {
     </div>
   </div>
 
-  <div class="window" id="filesWindow" style="display:none; width: 600px; height: 400px; top: 15%; left: 15%;">
-    <div class="window-header" id="filesWindowheader">
-      <div class="window-title">Files</div>
-      <div class="window-controls">
-        <span class="material-icons" onclick="document.getElementById('filesWindow').style.display='none'">close</span>
+  <div class="window" id="terminalWindow" style="display:none; width: 550px; height: 380px; top: 20%; left: 25%;">
+    <div class="window-header" id="terminalWindowheader" style="background: rgba(40,40,40,0.8); border-bottom: 1px solid #111;">
+      <div class="mac-controls">
+        <div class="mac-dot dot-close" onclick="document.getElementById('terminalWindow').style.display='none'"></div>
+        <div class="mac-dot dot-min"></div>
+        <div class="mac-dot dot-max"></div>
       </div>
-    </div>
-    <div class="window-content files-content">
-      <div class="file-item"><span class="material-icons" style="color:#4285F4; font-size: 48px;">description</span><span>Documents</span></div>
-      <div class="file-item"><span class="material-icons" style="color:#34A853; font-size: 48px;">table_chart</span><span>Spreadsheets</span></div>
-      <div class="file-item"><span class="material-icons" style="color:#FBBC05; font-size: 48px;">image</span><span>Images</span></div>
-      <div class="file-item"><span class="material-icons" style="color:#EA4335; font-size: 48px;">video_file</span><span>Videos</span></div>
-      <div class="file-item"><span class="material-icons" style="color:var(--text-muted); font-size: 48px;">folder_zip</span><span>Archives</span></div>
-      <div class="file-item"><span class="material-icons" style="color:var(--text-muted); font-size: 48px;">cloud_download</span><span>Downloads</span></div>
-    </div>
-  </div>
-
-  <div class="window" id="terminalWindow" style="display:none; width: 500px; height: 350px; top: 20%; left: 20%;">
-    <div class="window-header" id="terminalWindowheader" style="background: #2d2d2d; border-bottom: 1px solid #111;">
       <div class="window-title" style="color: #fff;">Terminal</div>
-      <div class="window-controls">
-        <span class="material-icons" style="color: #fff;" onclick="document.getElementById('terminalWindow').style.display='none'">close</span>
-      </div>
     </div>
     <div class="window-content terminal-content">
-      <div style="margin-bottom: 10px;">Google OS Terminal v1.0.0</div>
+      <div style="margin-bottom: 10px;">Google OS Darwin Engine v2.0</div>
       <div style="display: flex; width: 100%;">
-        <span style="margin-right: 8px;">user@os:~$</span>
+        <span style="margin-right: 8px;">orbitz@google-mac:~$</span>
         <input type="text" id="termInput" style="background: transparent; border: none; color: #00ff00; outline: none; flex-grow: 1; font-family: monospace; font-size: 14px;">
       </div>
       <div id="termOutput" style="width: 100%; text-align: left; white-space: pre-wrap; margin-top: 10px;"></div>
     </div>
   </div>
 
-  <div class="window" id="settingsWindow" style="display:none; width: 400px; height: 300px; top: 25%; left: 25%;">
+  <div class="window" id="settingsWindow" style="display:none; width: 450px; height: 320px; top: 25%; left: 30%;">
     <div class="window-header" id="settingsWindowheader">
-      <div class="window-title">Settings</div>
-      <div class="window-controls">
-        <span class="material-icons" onclick="document.getElementById('settingsWindow').style.display='none'">close</span>
+      <div class="mac-controls">
+        <div class="mac-dot dot-close" onclick="document.getElementById('settingsWindow').style.display='none'"></div>
+        <div class="mac-dot dot-min"></div>
+        <div class="mac-dot dot-max"></div>
       </div>
+      <div class="window-title">System Preferences</div>
     </div>
     <div class="window-content settings-content">
-      <h3 style="margin-top:0;">Appearance</h3>
-      <div style="display: flex; align-items: center; gap: 16px;">
-         <span>Enable Dark Mode</span>
+      <h2 style="margin-top:0;">Appearance</h2>
+      <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(128,128,128,0.1); border-radius: 8px;">
+         <span style="font-weight: 500;">Dark Mode</span>
          <label class="switch">
            <input type="checkbox" id="darkModeToggle">
            <span class="slider"></span>
@@ -466,41 +385,26 @@ input:checked + .slider:before {
       </div>
     </div>
   </div>
+
 </div>
 
-<div id="taskbar">
-  <div class="taskbar-left">
-     <span class="material-icons" style="font-size: 18px;">partly_cloudy_day</span>
-     <span style="font-size: 13px; font-weight: 500;">72°F</span>
-  </div>
-  
-  <div class="taskbar-center">
-    <div class="app-icon" id="startBtn">
-      <svg viewBox="0 0 24 24" width="24" height="24">
-        <path fill="#4285F4" d="M23.64 12.2c0-.83-.07-1.63-.2-2.39H12v4.53h6.53c-.28 1.47-1.09 2.71-2.3 3.53v2.93h3.72c2.18-2 3.44-4.96 3.44-8.6z"/>
-        <path fill="#34A853" d="M12 24c3.27 0 6.02-1.08 8.03-2.93l-3.72-2.93c-1.09.73-2.48 1.16-4.31 1.16-3.32 0-6.13-2.24-7.13-5.26H1.05v3.02C3.06 21.07 7.21 24 12 24z"/>
-        <path fill="#FBBC05" d="M4.87 14.04c-.26-.77-.4-1.59-.4-2.43s.14-1.66.4-2.43V6.16H1.05C.38 7.5 0 9.03 0 10.61c0 1.58.38 3.11 1.05 4.45l3.82-1.02z"/>
-        <path fill="#EA4335" d="M12 4.8c1.78 0 3.37.61 4.63 1.8l3.47-3.47C18.02 1.17 15.27 0 12 0 7.21 0 3.06 2.93 1.05 6.16l3.82 3.02C5.87 6.15 8.68 4.8 12 4.8z"/>
-      </svg>
+<div id="dock-container">
+  <div class="dock">
+    <div class="dock-icon" onclick="toggleWindow('browserWindow')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Google_Chrome_icon_%282011%29.svg/2048px-Google_Chrome_icon_%282011%29.svg.png" alt="Chrome">
     </div>
-    <div class="app-icon" onclick="toggleWindow('browserWindow')">
-      <img src="https://www.google.com/s2/favicons?sz=64&domain_url=google.com" width="24" height="24" style="border-radius: 50%;">
+    <div class="dock-icon" onclick="window.open('https://github.com/morbitzlovescheerios/windowstesty', '_blank')">
+      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
     </div>
-    <div class="app-icon" onclick="toggleWindow('filesWindow')">
-      <span class="material-icons" style="color: #FBBC05; font-size: 24px;">folder</span>
+    <div class="dock-icon" onclick="window.open('https://vscode.dev', '_blank')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VS Code">
     </div>
-    <div class="app-icon" onclick="toggleWindow('terminalWindow')">
-      <span class="material-icons" style="color: #ea4335; font-size: 24px;">terminal</span>
+    <div class="dock-icon" onclick="toggleWindow('terminalWindow')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Terminalicon2.png/512px-Terminalicon2.png" alt="Terminal">
     </div>
-    <div class="app-icon" onclick="toggleWindow('settingsWindow')">
-      <span class="material-icons" style="color: var(--text-muted); font-size: 24px;">settings</span>
+    <div class="dock-icon" onclick="toggleWindow('settingsWindow')">
+      <span class="material-icons" style="font-size: 32px; color: #5f6368;">settings</span>
     </div>
-  </div>
-
-  <div class="taskbar-right">
-    <span class="material-icons" style="font-size: 16px;">signal_wifi_4_bar</span>
-    <span class="material-icons" style="font-size: 16px;">battery_full</span>
-    <div id="clock" style="font-size: 13px; font-weight: 500;"></div>
   </div>
 </div>
 
@@ -509,13 +413,15 @@ input:checked + .slider:before {
 
   function updateTime() {
     const now = new Date();
+    const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    let day = days[now.getDay()];
     let hours = now.getHours();
     let minutes = now.getMinutes();
     const ampm = hours >= 12 ? 'PM' : 'AM';
     hours = hours % 12;
     hours = hours ? hours : 12; 
     minutes = minutes < 10 ? '0' + minutes : minutes;
-    document.getElementById('clock').textContent = hours + ':' + minutes + ' ' + ampm;
+    document.getElementById('clock').textContent = day + ' ' + hours + ':' + minutes + ' ' + ampm;
   }
   
   setInterval(updateTime, 1000);
@@ -576,26 +482,22 @@ input:checked + .slider:before {
     }
   }
 
-  ['browserWindow', 'filesWindow', 'terminalWindow', 'settingsWindow'].forEach(id => {
+  ['browserWindow', 'terminalWindow', 'settingsWindow'].forEach(id => {
     makeDraggable(document.getElementById(id));
   });
 
-  function handleSearchInput(e) {
+  document.getElementById('browserSearchInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter' && e.target.value.trim() !== '') {
       window.open('https://www.google.com/search?q=' + encodeURIComponent(e.target.value), '_blank');
       e.target.value = '';
-      document.getElementById('startMenu').classList.remove('active');
     }
-  }
-
-  document.getElementById('browserSearchInput').addEventListener('keypress', handleSearchInput);
-  document.getElementById('launcherInput').addEventListener('keypress', handleSearchInput);
+  });
 
   document.getElementById('termInput').addEventListener('keypress', function(e) {
     if (e.key === 'Enter') {
       let val = this.value;
       let out = document.getElementById('termOutput');
-      out.textContent += "\nuser@os:~$ " + val;
+      out.textContent += "\norbitz@google-mac:~$ " + val;
       if (val.trim() === 'date') {
         out.textContent += "\n" + new Date().toString();
       } else if (val.trim() === 'clear') {
@@ -613,18 +515,6 @@ input:checked + .slider:before {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
-    }
-  });
-
-  document.getElementById('startBtn').addEventListener('click', function(e) {
-    e.stopPropagation();
-    document.getElementById('startMenu').classList.toggle('active');
-  });
-
-  document.addEventListener('click', function(e) {
-    let menu = document.getElementById('startMenu');
-    if (menu.classList.contains('active') && !menu.contains(e.target) && e.target.id !== 'startBtn') {
-      menu.classList.remove('active');
     }
   });
 </script>
