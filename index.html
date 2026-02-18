@@ -18,7 +18,6 @@
 }
 
 [data-theme="dark"] {
-  --bg-desktop: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop');
   --bg-window: rgba(32, 33, 36, 0.95);
   --bg-header: #303134;
   --text-main: #e8eaed;
@@ -39,7 +38,7 @@ body {
   display: flex;
   flex-direction: column;
   color: var(--text-main);
-  transition: background 0.3s;
+  transition: background-image 0.5s ease;
 }
 
 #topbar {
@@ -55,6 +54,7 @@ body {
   font-weight: 500;
   border-bottom: 1px solid var(--glass-border);
   z-index: 9999;
+  position: relative;
 }
 
 .topbar-section {
@@ -80,6 +80,145 @@ body {
 
 .topbar-bold {
   font-weight: 700;
+}
+
+/* Custom Dropdown Menu from Screenshot */
+.topbar-dropdown-container {
+  position: relative;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 26px;
+  left: 0;
+  background: linear-gradient(180deg, #e368cd 0%, #8952d7 100%);
+  min-width: 240px;
+  border-radius: 0 0 6px 6px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  display: none;
+  flex-direction: column;
+  padding: 4px 0;
+  z-index: 10000;
+  font-size: 14px;
+  color: #1a1a1a;
+  border: 1px solid rgba(0,0,0,0.2);
+}
+
+.dropdown-menu.active { display: flex; }
+
+.menu-item {
+  padding: 4px 16px;
+  cursor: pointer;
+}
+
+.menu-item.highlight {
+  background: #007aff;
+  color: #fff;
+}
+
+.menu-item:hover:not(.disabled):not(.highlight) {
+  background: rgba(0, 122, 255, 0.8);
+  color: #fff;
+}
+
+.menu-item.disabled {
+  color: rgba(0,0,0,0.3);
+  cursor: default;
+}
+
+.menu-separator {
+  height: 1px;
+  background: rgba(0,0,0,0.15);
+  margin: 4px 0;
+}
+
+/* Control Center */
+.control-center {
+  position: absolute;
+  top: 36px;
+  right: 16px;
+  width: 300px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 16px;
+  display: none;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+  z-index: 10000;
+}
+
+.control-center.active { display: flex; }
+
+.cc-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.cc-module {
+  background: var(--bg-window);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  cursor: pointer;
+}
+
+.cc-module .icon-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #007aff;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cc-slider-container {
+  background: var(--bg-window);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cc-slider {
+  flex-grow: 1;
+  -webkit-appearance: none;
+  height: 6px;
+  background: var(--glass-border);
+  border-radius: 3px;
+  outline: none;
+}
+
+.cc-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  cursor: pointer;
+}
+
+.coming-soon-banner {
+  background: linear-gradient(135deg, #4285F4, #d664c1);
+  color: white;
+  text-align: center;
+  padding: 10px;
+  border-radius: 8px;
+  font-weight: 500;
+  font-size: 13px;
+  margin-top: 8px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
 }
 
 #desktop {
@@ -157,7 +296,6 @@ body {
   font-weight: 500;
   letter-spacing: -2px;
   margin-bottom: 24px;
-  font-family: 'Roboto', sans-serif;
 }
 
 .g-blue { color: #4285F4; }
@@ -187,19 +325,10 @@ body {
   font-size: 16px;
 }
 
-.terminal-content {
-  background: rgba(30, 30, 30, 0.95);
-  color: #00ff00;
-  font-family: monospace;
-  padding: 12px;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
 .settings-content {
   padding: 24px;
   flex-direction: column;
+  gap: 24px;
 }
 
 .switch {
@@ -209,40 +338,37 @@ body {
   height: 24px;
 }
 
-.switch input { 
-  opacity: 0;
-  width: 0;
-  height: 0;
-}
-
+.switch input { opacity: 0; width: 0; height: 0; }
 .slider {
-  position: absolute;
-  cursor: pointer;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background-color: var(--text-muted);
-  transition: .4s;
-  border-radius: 24px;
+  position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
+  background-color: var(--text-muted); transition: .4s; border-radius: 24px;
 }
-
 .slider:before {
-  position: absolute;
-  content: "";
-  height: 16px;
-  width: 16px;
-  left: 4px;
-  bottom: 4px;
-  background-color: white;
-  transition: .4s;
-  border-radius: 50%;
+  position: absolute; content: ""; height: 16px; width: 16px; left: 4px; bottom: 4px;
+  background-color: white; transition: .4s; border-radius: 50%;
+}
+input:checked + .slider { background-color: #4285F4; }
+input:checked + .slider:before { transform: translateX(20px); }
+
+.wallpaper-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
 }
 
-input:checked + .slider {
-  background-color: #4285F4;
+.wp-thumb {
+  width: 100%;
+  height: 70px;
+  border-radius: 8px;
+  cursor: pointer;
+  background-size: cover;
+  background-position: center;
+  border: 2px solid transparent;
+  transition: border 0.2s;
 }
 
-input:checked + .slider:before {
-  transform: translateX(20px);
-}
+.wp-thumb:hover { border: 2px solid #4285F4; }
 
 #dock-container {
   position: absolute;
@@ -256,7 +382,7 @@ input:checked + .slider:before {
 .dock {
   display: flex;
   align-items: flex-end;
-  gap: 6px;
+  gap: 8px;
   background: var(--glass-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
@@ -271,7 +397,7 @@ input:checked + .slider:before {
   width: 52px;
   height: 52px;
   border-radius: 12px;
-  background: #ffffff;
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -279,13 +405,13 @@ input:checked + .slider:before {
   transition: all 0.2s cubic-bezier(0.25, 1, 0.5, 1);
   transform-origin: bottom;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  overflow: hidden;
 }
 
 .dock-icon img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
+  border-radius: 12px;
 }
 
 .dock-icon:hover {
@@ -299,6 +425,24 @@ input:checked + .slider:before {
   transform: scale(1.25) translateY(-2px);
   margin: 0 8px;
 }
+
+.dock-divider {
+  width: 1px;
+  height: 40px;
+  background: rgba(0,0,0,0.2);
+  margin: 0 4px;
+  margin-bottom: 6px;
+}
+
+[data-theme="dark"] .dock-divider {
+  background: rgba(255,255,255,0.2);
+}
+
+/* Custom GitHub icon styling for the dock */
+.gh-purple {
+  background: #9333ea;
+  padding: 4px;
+}
 </style>
 </head>
 <body>
@@ -310,7 +454,32 @@ input:checked + .slider:before {
       <path fill="currentColor" d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
     </svg>
     <span class="topbar-item topbar-bold">Google OS</span>
-    <span class="topbar-item">File</span>
+    
+    <div class="topbar-dropdown-container">
+      <span class="topbar-item" onclick="toggleMenu('fileMenu', event)">File</span>
+      <div class="dropdown-menu" id="fileMenu">
+        <div class="menu-item highlight">New Finder Window</div>
+        <div class="menu-item">New Folder</div>
+        <div class="menu-item disabled">New Folder with Selection</div>
+        <div class="menu-item">New Smart Folder</div>
+        <div class="menu-item">New tab</div>
+        <div class="menu-item disabled">Open</div>
+        <div class="menu-item disabled">Open With</div>
+        <div class="menu-item disabled">Print</div>
+        <div class="menu-item disabled">Close Window</div>
+        <div class="menu-separator"></div>
+        <div class="menu-item">Get Info</div>
+        <div class="menu-item disabled">Rename</div>
+        <div class="menu-item disabled">Compress</div>
+        <div class="menu-separator"></div>
+        <div class="menu-item disabled">Duplicate</div>
+        <div class="menu-item disabled">Make Alias</div>
+        <div class="menu-item disabled">Quick Look</div>
+        <div class="menu-item disabled">Show Original</div>
+        <div class="menu-item disabled">Add to Sidebar</div>
+      </div>
+    </div>
+
     <span class="topbar-item">Edit</span>
     <span class="topbar-item">View</span>
     <span class="topbar-item">Window</span>
@@ -318,9 +487,38 @@ input:checked + .slider:before {
   </div>
   <div class="topbar-section">
     <span class="topbar-item" onclick="window.open('https://github.com/morbitzlovescheerios/windowstesty', '_blank')">Source: morbitzlovescheerios/windowstesty</span>
-    <span class="material-icons topbar-item" style="font-size: 16px;">signal_wifi_4_bar</span>
-    <span class="material-icons topbar-item" style="font-size: 16px;">battery_full</span>
+    <span class="material-icons topbar-item" id="cc-toggle" style="font-size: 18px;" onclick="toggleControlCenter(event)">tune</span>
     <span class="topbar-item" id="clock"></span>
+  </div>
+</div>
+
+<div class="control-center" id="controlCenter">
+  <div class="cc-grid">
+    <div class="cc-module">
+      <div class="icon-circle"><span class="material-icons" style="font-size: 18px;">wifi</span></div>
+      <div>
+        <div style="font-weight: 500; font-size: 13px;">Wi-Fi</div>
+        <div style="font-size: 11px; color: var(--text-muted);">Home Network</div>
+      </div>
+    </div>
+    <div class="cc-module">
+      <div class="icon-circle" style="background: #007aff;"><span class="material-icons" style="font-size: 18px;">bluetooth</span></div>
+      <div>
+        <div style="font-weight: 500; font-size: 13px;">Bluetooth</div>
+        <div style="font-size: 11px; color: var(--text-muted);">On</div>
+      </div>
+    </div>
+  </div>
+  <div class="cc-slider-container">
+    <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">light_mode</span>
+    <input type="range" min="1" max="100" value="80" class="cc-slider">
+  </div>
+  <div class="cc-slider-container">
+    <span class="material-icons" style="font-size: 18px; color: var(--text-muted);">volume_up</span>
+    <input type="range" min="1" max="100" value="50" class="cc-slider">
+  </div>
+  <div class="coming-soon-banner">
+    ✨ More is coming soon almost every day!
   </div>
 </div>
 
@@ -333,7 +531,7 @@ input:checked + .slider:before {
         <div class="mac-dot dot-min"></div>
         <div class="mac-dot dot-max"></div>
       </div>
-      <div class="window-title">Browser</div>
+      <div class="window-title">Google Browser</div>
     </div>
     <div class="window-content browser-content">
       <div class="google-logo">
@@ -346,26 +544,7 @@ input:checked + .slider:before {
     </div>
   </div>
 
-  <div class="window" id="terminalWindow" style="display:none; width: 550px; height: 380px; top: 20%; left: 25%;">
-    <div class="window-header" id="terminalWindowheader" style="background: rgba(40,40,40,0.8); border-bottom: 1px solid #111;">
-      <div class="mac-controls">
-        <div class="mac-dot dot-close" onclick="document.getElementById('terminalWindow').style.display='none'"></div>
-        <div class="mac-dot dot-min"></div>
-        <div class="mac-dot dot-max"></div>
-      </div>
-      <div class="window-title" style="color: #fff;">Terminal</div>
-    </div>
-    <div class="window-content terminal-content">
-      <div style="margin-bottom: 10px;">Google OS Darwin Engine v2.0</div>
-      <div style="display: flex; width: 100%;">
-        <span style="margin-right: 8px;">orbitz@google-mac:~$</span>
-        <input type="text" id="termInput" style="background: transparent; border: none; color: #00ff00; outline: none; flex-grow: 1; font-family: monospace; font-size: 14px;">
-      </div>
-      <div id="termOutput" style="width: 100%; text-align: left; white-space: pre-wrap; margin-top: 10px;"></div>
-    </div>
-  </div>
-
-  <div class="window" id="settingsWindow" style="display:none; width: 450px; height: 320px; top: 25%; left: 30%;">
+  <div class="window" id="settingsWindow" style="display:flex; width: 450px; height: 380px; top: 20%; left: 30%;">
     <div class="window-header" id="settingsWindowheader">
       <div class="mac-controls">
         <div class="mac-dot dot-close" onclick="document.getElementById('settingsWindow').style.display='none'"></div>
@@ -375,13 +554,24 @@ input:checked + .slider:before {
       <div class="window-title">System Preferences</div>
     </div>
     <div class="window-content settings-content">
-      <h2 style="margin-top:0;">Appearance</h2>
-      <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(128,128,128,0.1); border-radius: 8px;">
-         <span style="font-weight: 500;">Dark Mode</span>
-         <label class="switch">
-           <input type="checkbox" id="darkModeToggle">
-           <span class="slider"></span>
-         </label>
+      <div>
+        <h3 style="margin:0 0 12px 0;">Appearance</h3>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 16px; background: rgba(128,128,128,0.1); border-radius: 8px;">
+           <span style="font-weight: 500;">Dark Mode</span>
+           <label class="switch">
+             <input type="checkbox" id="darkModeToggle">
+             <span class="slider"></span>
+           </label>
+        </div>
+      </div>
+      
+      <div>
+        <h3 style="margin:0 0 12px 0;">Wallpapers</h3>
+        <div class="wallpaper-grid">
+           <div class="wp-thumb" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')" onclick="changeWallpaper('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2564&auto=format&fit=crop')"></div>
+           <div class="wp-thumb" style="background-image: url('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop')" onclick="changeWallpaper('https://images.unsplash.com/photo-1550684848-fac1c5b4e853?q=80&w=2564&auto=format&fit=crop')"></div>
+           <div class="wp-thumb" style="background-image: url('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2564&auto=format&fit=crop')" onclick="changeWallpaper('https://images.unsplash.com/photo-1579546929518-9e396f3cc809?q=80&w=2564&auto=format&fit=crop')"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -391,19 +581,32 @@ input:checked + .slider:before {
 <div id="dock-container">
   <div class="dock">
     <div class="dock-icon" onclick="toggleWindow('browserWindow')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/Google_Chrome_icon_%282011%29.svg/2048px-Google_Chrome_icon_%282011%29.svg.png" alt="Chrome">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/c/c9/Finder_Icon_macOS_Big_Sur.png" alt="Finder">
     </div>
-    <div class="dock-icon" onclick="window.open('https://github.com/morbitzlovescheerios/windowstesty', '_blank')">
-      <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="GitHub">
+    <div class="dock-icon" onclick="toggleWindow('settingsWindow')">
+      <img src="https://upload.wikimedia.org/wikipedia/en/thumb/0/05/Launchpad_Icon_macOS.png/256px-Launchpad_Icon_macOS.png" alt="Launchpad/Wallpaper">
+    </div>
+    <div class="dock-icon" onclick="window.alert('Calculator app coming soon!')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Calculator_icon_macOS.png/256px-Calculator_icon_macOS.png" alt="Calculator">
+    </div>
+    <div class="dock-icon" onclick="window.alert('Calendar app coming soon!')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/1b/Apple_Calendar_Icon.png/256px-Apple_Calendar_Icon.png" alt="Calendar">
     </div>
     <div class="dock-icon" onclick="window.open('https://vscode.dev', '_blank')">
       <img src="https://upload.wikimedia.org/wikipedia/commons/9/9a/Visual_Studio_Code_1.35_icon.svg" alt="VS Code">
     </div>
-    <div class="dock-icon" onclick="toggleWindow('terminalWindow')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b3/Terminalicon2.png/512px-Terminalicon2.png" alt="Terminal">
+    <div class="dock-icon" onclick="window.alert('App Store coming soon!')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/App_Store_%28iOS%29.svg/256px-App_Store_%28iOS%29.svg.png" alt="App Store">
     </div>
-    <div class="dock-icon" onclick="toggleWindow('settingsWindow')">
-      <span class="material-icons" style="font-size: 32px; color: #5f6368;">settings</span>
+    <div class="dock-divider"></div>
+    <div class="dock-icon" onclick="window.open('https://github.com/morbitzlovescheerios', '_blank')">
+      <img src="https://github.com/morbitzlovescheerios.png" alt="Your Cat Profile">
+    </div>
+    <div class="dock-icon gh-purple" onclick="window.open('https://github.com/morbitzlovescheerios/windowstesty', '_blank')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c2/GitHub_Invertocat_Logo.svg/256px-GitHub_Invertocat_Logo.svg.png" alt="GitHub">
+    </div>
+    <div class="dock-icon" onclick="window.open('https://vercel.com', '_blank')">
+      <img src="https://assets.vercel.com/image/upload/front/favicon/vercel/180x180.png" alt="Vercel">
     </div>
   </div>
 </div>
@@ -482,7 +685,7 @@ input:checked + .slider:before {
     }
   }
 
-  ['browserWindow', 'terminalWindow', 'settingsWindow'].forEach(id => {
+  ['browserWindow', 'settingsWindow'].forEach(id => {
     makeDraggable(document.getElementById(id));
   });
 
@@ -493,28 +696,40 @@ input:checked + .slider:before {
     }
   });
 
-  document.getElementById('termInput').addEventListener('keypress', function(e) {
-    if (e.key === 'Enter') {
-      let val = this.value;
-      let out = document.getElementById('termOutput');
-      out.textContent += "\norbitz@google-mac:~$ " + val;
-      if (val.trim() === 'date') {
-        out.textContent += "\n" + new Date().toString();
-      } else if (val.trim() === 'clear') {
-        out.textContent = "";
-      } else if (val.trim() !== '') {
-        out.textContent += "\nCommand not found: " + val;
-      }
-      this.value = '';
-      out.scrollTop = out.scrollHeight;
-    }
-  });
-
   document.getElementById('darkModeToggle').addEventListener('change', function(e) {
     if (e.target.checked) {
       document.documentElement.setAttribute('data-theme', 'dark');
     } else {
       document.documentElement.removeAttribute('data-theme');
+    }
+  });
+
+  function changeWallpaper(url) {
+    document.documentElement.style.setProperty('--bg-desktop', "url('" + url + "')");
+  }
+
+  function toggleMenu(menuId, event) {
+    event.stopPropagation();
+    let menu = document.getElementById(menuId);
+    let isActive = menu.classList.contains('active');
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+    if (!isActive) {
+      menu.classList.add('active');
+    }
+  }
+
+  function toggleControlCenter(event) {
+    event.stopPropagation();
+    document.getElementById('controlCenter').classList.toggle('active');
+    document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.topbar-dropdown-container')) {
+      document.querySelectorAll('.dropdown-menu').forEach(m => m.classList.remove('active'));
+    }
+    if (!e.target.closest('.control-center') && e.target.id !== 'cc-toggle') {
+      document.getElementById('controlCenter').classList.remove('active');
     }
   });
 </script>
