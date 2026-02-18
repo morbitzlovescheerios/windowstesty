@@ -25,9 +25,8 @@
   
   .window {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    top: calc(50% - 200px);
+    left: calc(50% - 300px);
     width: 600px;
     height: 400px;
     background: #ffffff;
@@ -36,7 +35,6 @@
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    transition: all 0.2s ease;
   }
   
   .window-header {
@@ -46,6 +44,11 @@
     align-items: center;
     padding: 0 16px;
     border-bottom: 1px solid #e8eaed;
+    cursor: grab;
+  }
+  
+  .window-header:active {
+    cursor: grabbing;
   }
   
   .window-title {
@@ -53,6 +56,7 @@
     font-size: 14px;
     color: #3c4043;
     font-weight: 500;
+    pointer-events: none;
   }
   
   .window-controls span {
@@ -114,6 +118,8 @@
     justify-content: space-between;
     padding: 0 16px;
     box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
+    position: relative;
+    z-index: 100;
   }
   
   .launcher-btn {
@@ -130,10 +136,6 @@
   
   .launcher-btn:hover {
     background: #e8eaed;
-  }
-  
-  .launcher-btn span {
-    color: #5f6368;
   }
   
   .app-icons {
@@ -171,17 +173,121 @@
     color: #3c4043;
     cursor: pointer;
   }
-  
-  .status-area span {
-    font-size: 16px;
+
+  .launcher-menu {
+    position: absolute;
+    bottom: 64px;
+    left: 16px;
+    width: 360px;
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(20px);
+    border-radius: 16px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: opacity 0.2s, transform 0.2s;
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+    z-index: 99;
   }
+
+  .launcher-menu.active {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: all;
+  }
+
+  .launcher-search {
+    background: #f1f3f4;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    padding: 8px 16px;
+  }
+
+  .launcher-search input {
+    border: none;
+    background: none;
+    outline: none;
+    margin-left: 8px;
+    width: 100%;
+    font-size: 14px;
+  }
+
+  .launcher-apps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+    padding: 8px 0;
+  }
+
+  .launcher-app-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+  }
+
+  .launcher-app-item img {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: #fff;
+    padding: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .launcher-app-item span {
+    font-size: 12px;
+    color: #3c4043;
+    font-weight: 500;
+  }
+
 </style>
 </head>
 <body>
 
 <div id="desktop">
+  
+  <div class="launcher-menu" id="launcherMenu">
+    <div class="launcher-search">
+      <span class="material-icons">search</span>
+      <input type="text" id="launcherInput" placeholder="Search your device, apps, web...">
+    </div>
+    <div class="launcher-apps">
+       <div class="launcher-app-item" onclick="window.open('https://youtube.com', '_blank')">
+         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=youtube.com" alt="YouTube">
+         <span>YouTube</span>
+       </div>
+       <div class="launcher-app-item" onclick="window.open('https://mail.google.com', '_blank')">
+         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=mail.google.com" alt="Gmail">
+         <span>Gmail</span>
+       </div>
+       <div class="launcher-app-item" onclick="window.open('https://drive.google.com', '_blank')">
+         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=drive.google.com" alt="Drive">
+         <span>Drive</span>
+       </div>
+       <div class="launcher-app-item" onclick="window.open('https://github.com', '_blank')">
+         <img src="https://www.google.com/s2/favicons?sz=64&domain_url=github.com" alt="GitHub">
+         <span>GitHub</span>
+       </div>
+       <div class="launcher-app-item" onclick="window.open('https://reddit.com', '_blank')">
+        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=reddit.com" alt="Reddit">
+        <span>Reddit</span>
+      </div>
+      <div class="launcher-app-item" onclick="window.open('https://wikipedia.org', '_blank')">
+        <img src="https://www.google.com/s2/favicons?sz=64&domain_url=wikipedia.org" alt="Wiki">
+        <span>Wiki</span>
+      </div>
+    </div>
+  </div>
+
   <div class="window" id="browserWindow">
-    <div class="window-header">
+    <div class="window-header" id="browserWindowheader">
       <div class="window-title">New Tab</div>
       <div class="window-controls">
         <span class="material-icons">remove</span>
@@ -195,7 +301,7 @@
       </div>
       <div class="search-bar">
         <span class="material-icons" style="color: #9aa0a6;">search</span>
-        <input type="text" placeholder="Search Google or type a URL">
+        <input type="text" id="browserSearchInput" placeholder="Search Google or type a URL">
         <span class="material-icons" style="color: #4285F4;">mic</span>
       </div>
     </div>
@@ -203,7 +309,7 @@
 </div>
 
 <div id="shelf">
-  <div class="launcher-btn">
+  <div class="launcher-btn" onclick="document.getElementById('launcherMenu').classList.toggle('active')">
     <span class="material-icons">radio_button_checked</span>
   </div>
   
@@ -217,9 +323,6 @@
     </div>
     <div class="app-icon">
       <span class="material-icons" style="color: #FBBC05; font-size: 28px;">folder</span>
-    </div>
-    <div class="app-icon">
-      <span class="material-icons" style="color: #4285F4; font-size: 28px;">description</span>
     </div>
   </div>
 
@@ -246,6 +349,56 @@
   
   setInterval(updateTime, 1000);
   updateTime();
+
+  dragElement(document.getElementById("browserWindow"));
+
+  function dragElement(elmnt) {
+    var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+    if (document.getElementById(elmnt.id + "header")) {
+      document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+    } else {
+      elmnt.onmousedown = dragMouseDown;
+    }
+
+    function dragMouseDown(e) {
+      e = e || window.event;
+      e.preventDefault();
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      document.onmouseup = closeDragElement;
+      document.onmousemove = elementDrag;
+    }
+
+    function elementDrag(e) {
+      e = e || window.event;
+      e.preventDefault();
+      pos1 = pos3 - e.clientX;
+      pos2 = pos4 - e.clientY;
+      pos3 = e.clientX;
+      pos4 = e.clientY;
+      elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+      elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+    }
+
+    function closeDragElement() {
+      document.onmouseup = null;
+      document.onmousemove = null;
+    }
+  }
+
+  function handleSearchInput(e) {
+    if (e.key === 'Enter' && e.target.value.trim() !== '') {
+      window.open('https://www.google.com/search?q=' + encodeURIComponent(e.target.value), '_blank');
+      e.target.value = '';
+      document.getElementById('launcherMenu').classList.remove('active');
+    }
+  }
+
+  document.getElementById('browserSearchInput').addEventListener('keypress', handleSearchInput);
+  document.getElementById('launcherInput').addEventListener('keypress', handleSearchInput);
+</script>
+</body>
+</html>
 </script>
 
 </body>
