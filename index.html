@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Google OS Web Concept</title>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Roboto', sans-serif;
+    background: linear-gradient(135deg, #e8f0fe 0%, #8ab4f8 100%);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  #desktop {
+    flex-grow: 1;
+    position: relative;
+  }
+  
+  .window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 600px;
+    height: 400px;
+    background: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 12px 24px rgba(0,0,0,0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: all 0.2s ease;
+  }
+  
+  .window-header {
+    background: #f1f3f4;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    border-bottom: 1px solid #e8eaed;
+  }
+  
+  .window-title {
+    flex-grow: 1;
+    font-size: 14px;
+    color: #3c4043;
+    font-weight: 500;
+  }
+  
+  .window-controls span {
+    margin-left: 12px;
+    font-size: 18px;
+    color: #5f6368;
+    cursor: pointer;
+  }
+  
+  .window-controls span:hover {
+    color: #202124;
+  }
+  
+  .window-content {
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+  
+  .google-logo {
+    font-size: 48px;
+    font-weight: 500;
+    letter-spacing: -2px;
+    margin-bottom: 24px;
+  }
+  
+  .g-blue { color: #4285F4; }
+  .g-red { color: #EA4335; }
+  .g-yellow { color: #FBBC05; }
+  .g-green { color: #34A853; }
+  
+  .search-bar {
+    width: 80%;
+    height: 44px;
+    border-radius: 22px;
+    border: 1px solid #dfe1e5;
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    box-shadow: 0 1px 6px rgba(32,33,36,0.1);
+  }
+  
+  .search-bar input {
+    border: none;
+    outline: none;
+    flex-grow: 1;
+    margin-left: 12px;
+    font-size: 16px;
+  }
+  
+  #shelf {
+    height: 56px;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    box-shadow: 0 -1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .launcher-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #f1f3f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .launcher-btn:hover {
+    background: #e8eaed;
+  }
+  
+  .launcher-btn span {
+    color: #5f6368;
+  }
+  
+  .app-icons {
+    display: flex;
+    gap: 12px;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  .app-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  
+  .app-icon:hover {
+    background: rgba(66, 133, 244, 0.1);
+  }
+  
+  .status-area {
+    display: flex;
+    align-items: center;
+    background: #f1f3f4;
+    padding: 6px 16px;
+    border-radius: 18px;
+    gap: 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #3c4043;
+    cursor: pointer;
+  }
+  
+  .status-area span {
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+
+<div id="desktop">
+  <div class="window" id="browserWindow">
+    <div class="window-header">
+      <div class="window-title">New Tab</div>
+      <div class="window-controls">
+        <span class="material-icons">remove</span>
+        <span class="material-icons">check_box_outline_blank</span>
+        <span class="material-icons" onclick="document.getElementById('browserWindow').style.display='none'">close</span>
+      </div>
+    </div>
+    <div class="window-content">
+      <div class="google-logo">
+        <span class="g-blue">G</span><span class="g-red">o</span><span class="g-yellow">o</span><span class="g-blue">g</span><span class="g-green">l</span><span class="g-red">e</span>
+      </div>
+      <div class="search-bar">
+        <span class="material-icons" style="color: #9aa0a6;">search</span>
+        <input type="text" placeholder="Search Google or type a URL">
+        <span class="material-icons" style="color: #4285F4;">mic</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="shelf">
+  <div class="launcher-btn">
+    <span class="material-icons">radio_button_checked</span>
+  </div>
+  
+  <div class="app-icons">
+    <div class="app-icon" onclick="document.getElementById('browserWindow').style.display='flex'">
+      <svg viewBox="0 0 24 24" width="28" height="28">
+        <path fill="#4285F4" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/>
+        <path fill="#34A853" d="M12 6c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4z"/>
+        <path fill="#EA4335" d="M12 8c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2h2c0-2.21-1.79-4-4-4z"/>
+      </svg>
+    </div>
+    <div class="app-icon">
+      <span class="material-icons" style="color: #FBBC05; font-size: 28px;">folder</span>
+    </div>
+    <div class="app-icon">
+      <span class="material-icons" style="color: #4285F4; font-size: 28px;">description</span>
+    </div>
+  </div>
+
+  <div class="status-area">
+    <span class="material-icons">signal_wifi_4_bar</span>
+    <span class="material-icons">battery_full</span>
+    <div id="clock"></div>
+  </div>
+</div>
+
+<script>
+  function updateTime() {
+    const now = new Date();
+    let hours = now.getHours();
+    let minutes = now.getMinutes();
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    hours = hours % 12;
+    hours = hours ? hours : 12; 
+    minutes = minutes < 10 ? '0' + minutes : minutes;
+    
+    document.getElementById('clock').textContent = hours + ':' + minutes + ' ' + ampm;
+  }
+  
+  setInterval(updateTime, 1000);
+  updateTime();
+</script>
+
+</body>
+</html>
